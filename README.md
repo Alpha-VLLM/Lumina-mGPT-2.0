@@ -126,6 +126,13 @@ We are hiring interns and full-time researchers at the Alpha VLLM Group, Shangha
       year={2025},
       url={https://github.com/Alpha-VLLM/Lumina-mGPT-2.0},
 }
+
+@article{xin2025lumina,
+  title={Lumina-mGPT 2.0: Stand-Alone AutoRegressive Image Modeling},
+  author={Xin, Yi and Yan, Juncheng and Qin, Qi and Li, Zhen and Liu, Dongyang and Li, Shicheng and Huang, Victor Shea-Jay and Zhou, Yupeng and Zhang, Renrui and Zhuo, Le and others},
+  journal={arXiv preprint arXiv:2507.17801},
+  year={2025}
+}
 ```
 
 
