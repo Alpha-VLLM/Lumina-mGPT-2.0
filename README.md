@@ -5,6 +5,11 @@
 
 <div align="center">
 <h1> Lumina-mGPT 2.0: Stand-alone Autoregressive Image Modeling </h1>
+ 
+[![Lumina-mGPT 2.0](https://img.shields.io/badge/Paper-Lumina--mGPT%202.0-2b9348.svg?logo=arXiv)](https://arxiv.org/abs/2507.17801)&#160;
+
+[![Lumina-mGPT 2.0](https://img.shields.io/badge/Lumina--T2I%20checkpoints-Model(7B)-yellow?logoColor=violet&label=%F0%9F%A4%97%20Lumina-mGPT%202.0%20checkpoints)](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)&#160;
+
 
 <b>¹Shanghai AI Laboratory, &nbsp;  ²SII, &nbsp; ³CUHK, &nbsp;⁴ZJUT</b>
 
@@ -103,7 +108,7 @@ Please refer to  [TRAIN.md](TRAIN.md)
 ## 🤗 Checkpoints
 | Model                  | Size | Resolution | pth link | Description |
 |------------------------|--------|--------|--------------------|--------------------|
-| Lumina-mGPT 2.0        | 7B     | 768px  | [7B](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | Text-to-Image & Image Pair Generation |
+| Lumina-mGPT 2.0        | 7B     | 768px  | [7B](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | Text-to-Image |
 | Lumina-mGPT 2.0 (Omni) | 7B     | 768px & 512px for I2I  | [7B-Omni](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | All-in-One                            |
 
 
