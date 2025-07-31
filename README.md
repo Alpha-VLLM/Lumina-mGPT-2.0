@@ -26,7 +26,9 @@ We introduce a stand-alone, decoder-only autoregressive model, **trained from sc
 
 
 ## 🔥 News
-**[2025-04-03]** 🎉🎉🎉 Lumina-mGPT 2.0 is released! 🎉🎉🎉
+**[2025-07-25]** 🎉🎉🎉 We released the technical report on [arXiv](https://arxiv.org/abs/2507.17801).
+
+**[2025-04-03]** 🎉🎉🎉 Lumina-mGPT 2.0 is released!
 
 
 ## 📝 Open-source Plan
@@ -98,9 +100,11 @@ Please refer to  [TRAIN.md](TRAIN.md)
 
 
 ## 🤗 Checkpoints
-| Model                | Size | Reso | pth link | Description |
-|----------------------|--------|--------|--------------------|--------------------|
-| Lumina-mGPT 2.0      | 7B     | 768px  | [7B_768px](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | Text-to-Image & Image Pair Generation |
+| Model                  | Size | Reso | pth link | Description |
+|------------------------|--------|--------|--------------------|--------------------|
+| Lumina-mGPT 2.0        | 7B     | 768px  | [7B_768px](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | Text-to-Image & Image Pair Generation |
+| Lumina-mGPT 2.0 (Omni) | 7B     | 768px & 512 * 1024 for I2I  | [7B_768px](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | All-in-One                            |
+
 
 ## 📜 Acknowledgements
 
