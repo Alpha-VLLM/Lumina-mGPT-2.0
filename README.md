@@ -34,8 +34,9 @@ We introduce a stand-alone, decoder-only autoregressive model, **trained from sc
 ## 📝 Open-source Plan
  - [x] Text-to-Image / Image Pair Generation Inference & Checkpoints
  - [x] Finetuning code
+ - [x] Technical Report
  - [ ] All-in-One Inference & Checkpoints
- - [ ] Technical Report
+ 
 
 ## 📽️ Demo Examples
 <details open>
@@ -100,10 +101,10 @@ Please refer to  [TRAIN.md](TRAIN.md)
 
 
 ## 🤗 Checkpoints
-| Model                  | Size | Reso | pth link | Description |
+| Model                  | Size | Resolution | pth link | Description |
 |------------------------|--------|--------|--------------------|--------------------|
-| Lumina-mGPT 2.0        | 7B     | 768px  | [7B_768px](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | Text-to-Image & Image Pair Generation |
-| Lumina-mGPT 2.0 (Omni) | 7B     | 768px & 512 * 1024 for I2I  | [7B_768px](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | All-in-One                            |
+| Lumina-mGPT 2.0        | 7B     | 768px  | [7B](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | Text-to-Image & Image Pair Generation |
+| Lumina-mGPT 2.0 (Omni) | 7B     | 768px & 512px for I2I  | [7B-Omni](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)       | All-in-One                            |
 
 
 ## 📜 Acknowledgements
