@@ -4,7 +4,7 @@
 </p>
 
 <div align="center">
-<h1> Lumina-mGPT 2.0: Stand-alone Autoregressive Image Modeling </h1>
+<h1> Lumina-mGPT 2.0: Stand-Alone AutoRegressive Image Modeling </h1>
  
 [![Lumina-mGPT 2.0](https://img.shields.io/badge/Paper-Lumina--mGPT%202.0-2b9348.svg?logo=arXiv)](https://arxiv.org/abs/2507.17801)&#160;
 [![Lumina-mGPT 2.0](https://img.shields.io/badge/Lumina--T2I%20checkpoints-Model(7B)-yellow?logoColor=violet&label=%F0%9F%A4%97%20Lumina-mGPT%202.0%20checkpoints)](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0)&#160;
@@ -76,7 +76,8 @@ mkdir -p lumina_mgpt/movqgan/270M
 wget -O lumina_mgpt/movqgan/270M/movqgan_270M.ckpt https://huggingface.co/ai-forever/MoVQGAN/resolve/main/movqgan_270M.ckpt
 ```
 
-### ⛽ Inference
+
+### ⛽ Text-to-Image Generation 
 #### 1. Simple Inference
 ```
 python generate_examples/generate.py \
@@ -99,6 +100,24 @@ We provide the inference time and GPU memory on one A100 as a reference:
 | Lumina-mGPT 2.0      | 694s   | 80 GB  | ✅ Recommend |
 | + speculative_jacobi | 324s     | 79.2 GB  | ✅ Recommend |
 | + speculative_jacobi & quant | 304s     | 33.8 GB  |  |
+
+### 🌟 Image-to-Image Inference
+You can refer to [sample_i2i.sh](lumina_mgpt/scripts/sample_i2i.sh). We DO NOT recommand speculative_jacobi for image-to-image inference.
+```
+# controllable generation
+python generate_examples/generate.py \
+--model_path Alpha-VLLM/Lumina-mGPT-2.0 --save_path save_samples/ \
+--cfg 4.0 --top_k 4096 --temperature 1.0 --width 512 --height 1024 --task i2i \
+--i2i_task depth --image_path "assets/depth.png" \
+--image_prompt "A rubber outdoor basketball. On a sunlit outdoor court, it bounces near a vibrant mural, casting a long shadow on the asphalt as children eagerly chase it."
+
+# subject driven generation
+python generate_examples/generate.py \
+--model_path Alpha-VLLM/Lumina-mGPT-2.0 --save_path save_samples/ \
+--cfg 4.0 --top_k 4096 --temperature 1.0 --width 512 --height 1024 --task i2i \
+--i2i_task subject --image_path "assets/subject.png" \
+--image_prompt "On a bustling city rooftop at sunset, this item gleams in a tall glass as the skyline silhouettes in the background, the air filled with laughter and clinking glasses."
+```
 
 ### 💻 Finetuning
 Please refer to  [TRAIN.md](TRAIN.md)
