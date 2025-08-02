@@ -11,7 +11,9 @@
 [![Lumina-mGPT 2.0](https://img.shields.io/badge/Lumina--T2I%20checkpoints-Model(7B)-yellow?logoColor=violet&label=%F0%9F%A4%97%20Lumina-mGPT%202.0%20Omni%20checkpoints)](https://huggingface.co/Alpha-VLLM/Lumina-mGPT-2.0-Omni)
 
 
-<b>¹Shanghai AI Laboratory, &nbsp;  ²SII, &nbsp; ³CUHK, &nbsp;⁴ZJUT</b>
+<b>¹Shanghai AI Laboratory, &nbsp;  ²Shanghai Innovation Institute, &nbsp; ³The Chinese University of Hong Kong,</b>
+
+<b>⁴Shanghai Jiao Tong University, &nbsp; ⁵Zhejiang University of Technology</b>
 
 </div>
 
