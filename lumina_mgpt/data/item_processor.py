@@ -87,6 +87,7 @@ class FlexARItemProcessor(MMConvItemProcessor):
         tokenizer="Alpha-VLLM/Lumina-mGPT-2.0",
         conv_template=Conversation,
         target_size=512,
+        device="cuda",
     ):
 
         super().__init__(
@@ -103,7 +104,7 @@ class FlexARItemProcessor(MMConvItemProcessor):
         logger.info("List of crop sizes:")
         for i in range(0, len(self.crop_size_list), 6):
             logger.info(" " + "".join([f"{f'{w} x {h}':14s}" for w, h in self.crop_size_list[i : i + 6]]))
-        self.vqgan = get_movqgan_model('270M', pretrained=True, device="cuda")
+        self.vqgan = get_movqgan_model('270M', pretrained=True, device=device)
 
     @staticmethod
     def get_n_grids_token(n_grids):
@@ -242,3 +243,36 @@ class FlexARItemProcessor(MMConvItemProcessor):
         tokens = tokens.view(h_latent_dim, w_latent_dim + 1)[:, :-1].flatten()
 
         return self.chameleon_ori_image_tokenizer.pil_from_img_toks(tokens, h_latent_dim, w_latent_dim)
+    
+    @torch.no_grad()
+    def process_i2i_image(self, image) -> Dict:
+        if isinstance(image, Image.Image):
+            pass
+        else:
+            image = Image.open(read_general(image))
+
+        w_grid_dim, h_grid_dim = image.size[0] // self.patch_size, image.size[1] // self.patch_size
+        h_grid_dim *= 2
+        
+        image_toks = self.img_tokens_from_pil(image)
+        image_toks = image_toks.view(-1)
+        full_image_toks = self.get_image_token(image_toks.reshape(image.size[1] // 8, image.size[0] // 8))
+        new_line_id = self.token2id(self.new_line_token)
+
+        full_image_toks = torch.cat(
+            (
+                full_image_toks,
+                torch.ones(image.size[1] // 8, 1, device=full_image_toks.device, dtype=full_image_toks.dtype)
+                * new_line_id,
+            ),
+            dim=1,
+        ).flatten()
+        
+        result_toks = [
+            self.token2id(self.image_start_token),
+            self.token2id(self.get_n_grids_token(h_grid_dim)),
+            self.token2id(self.get_n_grids_token(w_grid_dim)),
+            *full_image_toks.tolist(),
+        ]
+
+        return {"input_ids": result_toks, "labels": result_toks}

@@ -285,7 +285,7 @@ class FlexARInferenceSolver:
 
         return parser
 
-    def __init__(self, model_path, precision, target_size=512, quant=False, sjd=False):
+    def __init__(self, model_path, precision, target_size=512, quant=False, sjd=False, device="cuda"):
         self.dtype = {"bf16": torch.bfloat16, "fp16": torch.float16, "fp32": torch.float32}[precision]
         self.quant = quant
         self.sjd = sjd
@@ -301,12 +301,12 @@ class FlexARInferenceSolver:
         self.model = ChameleonForConditionalGeneration.from_pretrained(
             model_path,
             torch_dtype=self.dtype,
-            device_map="cuda",
+            device_map=device,
             quantization_config=quantization_config
         )
         print(self.model)
         self.target_size = target_size
-        self.item_processor = FlexARItemProcessor(target_size=target_size)
+        self.item_processor = FlexARItemProcessor(target_size=target_size, tokenizer=model_path, device=device)
 
         if self.quant:
             ## compile the model to get speedup
@@ -317,7 +317,6 @@ class FlexARInferenceSolver:
             self.model.generation_config.cache_implementation = "static"
             
             
-            # self.model.forward_decoding = torch.compile(self.model.forward_decoding, mode="reduce-overhead", fullgraph=True)
             if not self.sjd:
                 torch._inductor.config.triton.cudagraph_skip_dynamic_graphs=True
                 self.model.forward_decoding = torch.compile(self.model.forward_decoding, mode="reduce-overhead", fullgraph=True)
@@ -333,7 +332,6 @@ class FlexARInferenceSolver:
                 ]
                 generate_kwargs = {
                     "max_new_tokens": 9500,
-                    # "max_length": self.model.config.max_position_embeddings,
                     "temperature": 1.0,
                     "top_k": None,
                     "do_sample": True,
@@ -373,7 +371,6 @@ class FlexARInferenceSolver:
                 print("Done!")
                 end = time.perf_counter()
                 print('Warmup time: ', end-start, 's')
-            # """
 
     def get_streamer(self):
         return TextStreamer(self.item_processor.tokenizer)
@@ -404,8 +401,18 @@ class FlexARInferenceSolver:
                 }
             )
         item = {"image": images, "conversations": conversations}
-        _prompt = self.item_processor.process_item(item)
         
+        self.item_processor.transform = {"<|image|>": self.item_processor.process_i2i_image} # for i2i
+
+        _prompt = self.item_processor.process_item(item)
+        if 151665 in _prompt: # for i2i
+            _prompt.pop()
+            start_index = _prompt.index(151665)
+            ref_tokens = _prompt[start_index:]
+        else:
+            ref_tokens = None
+
+
         prompt = []
         for value in _prompt:
             if isinstance(value, int):
@@ -431,8 +438,7 @@ class FlexARInferenceSolver:
 
         if logits_processor is None:
             logits_processor = self.create_logits_processor()
-        
-        # from pdb import set_trace; set_trace()
+            
         st = time.time()
         if self.quant:
             generation_result = self.model.generate(
@@ -449,11 +455,9 @@ class FlexARInferenceSolver:
             
         print("Length of ids:", len(generation_result))
         print(f"SAMPLE TIME:{time.time()-st}")
-        # with open("./sjd_fix.txt", 'w') as f:
-        #     for i in generation_result:
-        #         f.write(str(i)+'\n')
-        # from pdb import set_trace; set_trace()
         
+        if ref_tokens is not None:
+            generation_result = ref_tokens + generation_result
         return self.decode_ids(generation_result)
     
     def show_images(self, batch):
