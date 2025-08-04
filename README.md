@@ -90,7 +90,16 @@ python generate_examples/generate.py \
 --cfg 4.0 --top_k 4096 --temperature 1.0 --width 768 --height 768
 ```
 
-#### 2. Accelerate Inference
+#### 2. Simple Inference with contol image and prompt
+```
+python generate_examples/generate_single_prompt_with_image.py.py \
+--model_path Alpha-VLLM/Lumina-mGPT-2.0 --save_path save_samples/ \
+--cfg 4.0 --top_k 4096 --temperature 1.0 --width 768 --height 768 \
+--task depth --input_image_path /path/to/image.jpg \
+--prompt "Your prompt text here"
+```
+
+#### 3. Accelerate Inference
 Provide two acceleration strategies: Speculative Jacobi Decoding (```--speculative_jacobi```) and Model Quantization (```--quant```).
 ```
 python generate_examples/generate.py \
