@@ -11,6 +11,6 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Alpha-VLLM/Lumina-mGPT",
-    packages=["xllmx"],
+    packages=setuptools.find_packages(include=["xllmx", "xllmx.*"]),
     include_package_data=True,
 )
